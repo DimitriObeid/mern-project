@@ -1,0 +1,27 @@
+# Dossier des modules de NodeJS
+/node_modules
+
+# NE JAMAIS PUSH LE FICHIER DE CONFIGURATIONS DES VARIABLES D'ENVIRONNEMENT
+/config/.env
+
+# Dépendences
+node_modules
+client/node_modules
+client/.pnp*
+
+# Tests
+clients/coverage/
+
+# Dossier de production
+clients/build/
+
+# Fichiers divers
+client/.DS_Store
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*

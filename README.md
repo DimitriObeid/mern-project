@@ -1,4 +1,3 @@
-# mern-project
-Développement d'un réseau social avec la pile logicielle MERN.
+La partie React Native se trouve dans le dossier "client".
 
 La partie d'authentification est en cours de développement.
