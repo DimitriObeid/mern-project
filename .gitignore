@@ -3,6 +3,7 @@
 
 # NE JAMAIS PUSH LE FICHIER DE CONFIGURATIONS DES VARIABLES D'ENVIRONNEMENT
 /config/.env
+/client/.env
 
 # Dépendences
 node_modules
