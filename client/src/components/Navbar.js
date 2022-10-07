@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { UidContext } from './AppContext'
 import Logout from './Log/Logout'
@@ -6,6 +7,10 @@ import Logout from './Log/Logout'
 const Navbar = () => {
   // On récupère l'UID (situé au plus haut niveau de notre application) pour personnaliser le texte de droite de la barre de navigation.
   const uid = useContext(UidContext)
+
+  // On récupère le nom de l'utilisateur enregistré dans le store, et on l'enregistre dans la variable "userData", tout en utilisant le hook "useSelector()".
+  // En lui disant "(state) => state.userReducer", notre component sait qu'il doit aller dans notre reducer "userReducer" pour chercher les données de notre utilisateur.
+  const userData = useSelector((state) => state.userReducer)
 
   return (
     <nav>
@@ -25,7 +30,7 @@ const Navbar = () => {
             <li className="welcome">
               {/* Si l'utilisateur clique sur le texte de bienvenue, il est redirigé vers la page de son profil */}
               <NavLink exact to="/profil">
-                <h5>Bienvenue 'valeur dynamique'</h5>
+                <h5>Bienvenue {userData.pseudo}</h5>
               </NavLink>
             </li>
 
