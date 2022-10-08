@@ -33,7 +33,9 @@ const App = () => {
     fetchToken()
 
     // Si l'UID existe (l'utilisateur est connecté), on appelle notre fonction "getUser()" déninie dans fichier "user.actions.js".
-    if (uid) dispatch(getUser(uid))
+    if (uid) {
+      dispatch(getUser(uid))
+    }
   }, [uid])
 
   // On appelle notre component "Routes" dans une balise HTML.

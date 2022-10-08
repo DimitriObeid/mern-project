@@ -4,6 +4,7 @@ import App from './App'
 import './styles/index.scss'
 import { Provider } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
+import { getUsers } from './actions/users.actions'
 
 // "Thunk" est un middleware nous permettant de faire des requêtes asynchrones avec Redux.
 import thunk from 'redux-thunk'
@@ -21,6 +22,10 @@ const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 )
+
+// On doit appeler la fonction getUsers (obtenir la liste des abonnements de l'utilisateur) LE PLUS RAPIDEMENT POSSIBLE, C-À-D dès que l'utilisateur ouvre une page et voit son fil d'actualités s'afficher sur la page d'accueil. On doit donc être en mesure d'afficher la photo de profil des autres utilisateurs, leurs pseudos, leurs commentaires.
+// Dès qu'on lance notre application, on effectue une requête GET pour envoyer tous les utilisateurs, pour qu'on puisse traiter ces informations pour les afficher.
+store.dispatch(getUsers())
 
 // On injecte ici (dans <App />) tous les affichages et toute la logique de l'application.
 // La méthode "document.getElementById('root')" fait référence à l'ID "root" dans le fichier "index.html"

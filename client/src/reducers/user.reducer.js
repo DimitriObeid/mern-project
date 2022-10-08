@@ -1,6 +1,6 @@
 // Ce fichier sert de reducer pour notre utilisateur connecté. On y stocke ses informations pour y avoir accès tout le temps.
 
-import { GET_USER } from '../actions/user.actions'
+import { GET_USER, UPDATE_BIO, UPLOAD_PICTURE } from '../actions/user.actions'
 
 // Dans ce state, on cherchera en premier lieu les données dans la BDD pour la stocker dans le store, pour ne plus jamais avoir à interagir avec la BDD
 const initialState = {}
@@ -15,6 +15,16 @@ export default function userReducer(state = initialState, action) {
     case GET_USER:
       // En retournant la data envoyée par la BDD, on incrémente notre "initialState", qui est vide au début, avec ces données, qui seront donc accessibles par tous les components du site.
       return action.payload
+
+    case UPLOAD_PICTURE:
+      return {
+        // Avec l'opérateur spread, on récupère les données de notre utilisateur sans les écraser, sinon il n'y aurait plus que l'image dans les données de l'utilisateur. En revanche, on va modifier la donnée stockée dans le champ "picture".
+        ...state,
+        picture: action.payload,
+      }
+
+    case UPDATE_BIO:
+      return { ...state, bio: action.payload }
 
     // Par défaut, on retourne le state.
     default:

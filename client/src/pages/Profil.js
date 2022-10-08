@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import Log from '../components/Log'
 import { UidContext } from '../components/AppContext'
+import UpdateProfil from '../components/Profil/UpdateProfil'
 
 const Profil = () => {
   // En faisant comme ça, notre variable "uid" aura l'ID de l'utilisateur s'il est connecté.
@@ -8,9 +9,9 @@ const Profil = () => {
 
   return (
     <div className="profil-page">
-      {/* On vérifie si l'utilisateur est connecté, pour pouvoir lui afficher le formulaire de connexion s'il ne l'est pas */}
+      {/* On vérifie si l'utilisateur est connecté, pour pouvoir lui afficher le formulaire de connexion s'il ne l'est pas. S'il l'est, on lui envoie la page de mise à jour du profil via le component "UpdateProfil" */}
       {uid ? (
-        <h1>UPDATE PAGE</h1>
+        <UpdateProfil />
       ) : (
         <div className="log-container">
           {/* Quand on appelle notre component "Log", on peut lui passer des informations */}
