@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import UploadImg from './UploadImg'
 import { updateBio } from '../../actions/user.actions'
 import { dateParser } from '../Utils'
+import FollowHandler from './FollowHandler'
 
 const UpdateProfil = () => {
   const [bio, setBio] = useState('')
@@ -102,9 +103,10 @@ const UpdateProfil = () => {
                         {/* On envoie dans l'attribut "src" le chemin de l'image de profil de l'abonné. */}
                         <img src={user.picture} alt="user-pic" />
                         <h4>{user.pseudo}</h4>
-
-                        {/* On ajoute la possibilité de ne plus suivre l'utilisateur. */}
-                        <h1>FOLLOW HANDLER</h1>
+                        <div className="follow-handler">
+                          {/* On ajoute la possibilité de ne plus suivre l'utilisateur. On passe l'ID de l'abonné dans le prop "idToFollow" */}
+                          <FollowHandler idToFollow={user._id} />
+                        </div>
                       </li>
                     )
                   }
@@ -137,9 +139,10 @@ const UpdateProfil = () => {
                         {/* On envoie dans l'attribut "src" le chemin de l'image de profil de l'abonné. */}
                         <img src={user.picture} alt="user-pic" />
                         <h4>{user.pseudo}</h4>
-
-                        {/* On ajoute la possibilité de suivre l'utilisateur. */}
-                        <h1>FOLLOW HANDLER</h1>
+                        <div className="follow-handler">
+                          {/* On ajoute la possibilité de suivre l'utilisateur. */}
+                          <FollowHandler idToFollow={user._id} />
+                        </div>
                       </li>
                     )
                   }

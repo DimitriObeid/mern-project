@@ -9,6 +9,10 @@ export const UPLOAD_PICTURE = 'UPLOAD_PICTURE'
 
 export const UPDATE_BIO = 'UPDATE_BIO'
 
+export const FOLLOW_USER = 'FOLLOW_USER'
+
+export const UNFOLLOW_USER = 'UNFOLLOW_USER'
+
 // Paramètre : l'user ID de notre utilisateur.
 export const getUser = (uid) => {
   // Le dispatch est la donnée qui sera envoyée au reducer pour qu'il la mette dans le store. Avant d'envoyer les choses au reducer, on envoie les données à la BDD.
@@ -66,6 +70,42 @@ export const updateBio = (userId, bio) => {
     })
       .then((res) => {
         dispatch({ type: UPDATE_BIO, payload: bio })
+      })
+      .catch((err) => console.log(err))
+  }
+}
+
+// Paramètres : ID d'utilisateur, ID de la personne à suivre.
+export const followUser = (followerId, idToFollow) => {
+  return (dispatch) => {
+    return axios({
+      method: 'patch',
+      url: `${process.env.REACT_APP_API_URL}api/user/follow/` + followerId,
+      data: { idToFollow },
+    })
+      .then((res) => {
+        dispatch({
+          type: FOLLOW_USER,
+          payload: { idToFollow },
+        })
+      })
+      .catch((err) => console.log(err))
+  }
+}
+
+// Paramètres : ID d'utilisateur, ID de la personne à ne plus suivre.
+export const unfollowUser = (followerId, idToUnfollow) => {
+  return (dispatch) => {
+    return axios({
+      method: 'patch',
+      url: `${process.env.REACT_APP_API_URL}api/user/unfollow/` + followerId,
+      data: { idToUnfollow },
+    })
+      .then((res) => {
+        dispatch({
+          type: UNFOLLOW_USER,
+          payload: { idToUnfollow },
+        })
       })
       .catch((err) => console.log(err))
   }

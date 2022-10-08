@@ -18,3 +18,14 @@ export const dateParser = (num) => {
 
   return date.toString()
 }
+
+// Fonction qui va vérifier si un champ est rempli ou pas.
+export const isEmpty = (value) => {
+  // Si une de ces conditions est vraie, alors on retourn "true"
+  return (
+    value === undefined ||
+    value === null ||
+    (typeof value === 'object' && Object.keys(value).length === 0) ||
+    (typeof value === 'string' && value.trim().length === 0)
+  )
+}

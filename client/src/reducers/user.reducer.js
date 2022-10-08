@@ -1,6 +1,12 @@
 // Ce fichier sert de reducer pour notre utilisateur connecté. On y stocke ses informations pour y avoir accès tout le temps.
 
-import { GET_USER, UPDATE_BIO, UPLOAD_PICTURE } from '../actions/user.actions'
+import {
+  FOLLOW_USER,
+  GET_USER,
+  UNFOLLOW_USER,
+  UPDATE_BIO,
+  UPLOAD_PICTURE,
+} from '../actions/user.actions'
 
 // Dans ce state, on cherchera en premier lieu les données dans la BDD pour la stocker dans le store, pour ne plus jamais avoir à interagir avec la BDD
 const initialState = {}
@@ -25,6 +31,20 @@ export default function userReducer(state = initialState, action) {
 
     case UPDATE_BIO:
       return { ...state, bio: action.payload }
+
+    case FOLLOW_USER:
+      return {
+        ...state,
+        following: [action.payload.idToFollow, ...state.following],
+      }
+    case UNFOLLOW_USER:
+      return {
+        ...state,
+        // En paramètre de la méthode "filter", on dit que tous les ID différents de l'ID de la personne à ne plus suivre sont à mettre dans le tableau. On ne retire donc que l'ID de la personne à ne plus suivre.
+        following: state.following.filter(
+          (id) => id !== action.payload.idToUnfollow
+        ),
+      }
 
     // Par défaut, on retourne le state.
     default:
