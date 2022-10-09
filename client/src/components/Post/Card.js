@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { dateParser, isEmpty } from '../Utils'
 import FollowHandler from '../Profil/FollowHandler'
+import LikeButton from './LikeButton'
 
 // Le "post" est le prop passé lors de l'appel du component "Card" dans le fichier "Thread.js".
 const Card = ({ post }) => {
@@ -89,7 +90,7 @@ const Card = ({ post }) => {
                 {/* Obtention du nombre de commentaires obtenus */}
                 <span>{post.comments.length}</span>
               </div>
-              <h6>Like button</h6>
+              <LikeButton post={post} />
               <img src="./img/icons/share.svg" alt="share" />
             </div>
           </div>

@@ -29,3 +29,6 @@ client/yarn-error.log*
 
 # Fichiers temporaires créés par LibreOffice
 **/*.~lock*
+
+# Documentation en cours d'écriture
+client/Prise\ de\ notes\ Redux.odt
