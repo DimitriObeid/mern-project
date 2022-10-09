@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { followUser, unfollowUser } from '../../actions/user.actions'
 import { isEmpty } from '../Utils'
 
-const FollowHandler = ({ idToFollow }) => {
+// Les arguments de ce component sont ses props.
+// Le type : Si c'est le type "suggestion" comme dans le panneau "Suggestion" de la page d'accueil, on affiche le bouton avec le texte "Suivre". Sinon, si c'est le type "card", qu'on voit à côté du pseudo de l'auteur d'un post, alors on affiche l'icône avec le coche.
+const FollowHandler = ({ idToFollow, type }) => {
   const userData = useSelector((state) => state.userReducer)
 
   // On détermine si la personne affichée est suivie ou non par l'utilisateur actuel. Par défaut, le modal est sur "false", car de base, on considèrera toujours que la personne à suivre n'est pas suivie par l'utilisateur. Quand on appelera le modal, on frea donc un petit calcul qui déterminera si un autre utilisateur est suivi ou pas par notre utilisateur.
@@ -45,12 +47,20 @@ const FollowHandler = ({ idToFollow }) => {
     <>
       {isFollowed && !isEmpty(userData) && (
         <span onClick={handleUnfollow}>
-          <button className="unfollow-btn">Abonné</button>
+          {type === 'suggestion' && (
+            <button className="unfollow-btn">Abonné</button>
+          )}
+          {type === 'card' && (
+            <img src="./img/icons/checked.svg" alt="checked" />
+          )}
         </span>
       )}
       {isFollowed === false && !isEmpty(userData) && (
         <span onClick={handleFollow}>
-          <button className="follow-btn">Suivre</button>
+          {type === 'suggestion' && (
+            <button className="follow-btn">Suivre</button>
+          )}
+          {type === 'card' && <img src="./img/icons/check.svg" alt="check" />}
         </span>
       )}
     </>

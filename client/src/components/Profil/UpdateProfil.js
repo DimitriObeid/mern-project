@@ -35,7 +35,7 @@ const UpdateProfil = () => {
       <h1>Profil de {userData.pseudo}</h1>
       <div className="update-container">
         <div className="left-part">
-          <h3>Photo de profil</h3>
+          <h3>Votre photo de profil</h3>
           <img src={userData.picture} alt="user-pic" />
           <UploadImg />
         </div>
@@ -105,7 +105,10 @@ const UpdateProfil = () => {
                         <h4>{user.pseudo}</h4>
                         <div className="follow-handler">
                           {/* On ajoute la possibilité de ne plus suivre l'utilisateur. On passe l'ID de l'abonné dans le prop "idToFollow" */}
-                          <FollowHandler idToFollow={user._id} />
+                          <FollowHandler
+                            idToFollow={user._id}
+                            type={'suggestion'}
+                          />
                         </div>
                       </li>
                     )
@@ -141,7 +144,10 @@ const UpdateProfil = () => {
                         <h4>{user.pseudo}</h4>
                         <div className="follow-handler">
                           {/* On ajoute la possibilité de suivre l'utilisateur. */}
-                          <FollowHandler idToFollow={user._id} />
+                          <FollowHandler
+                            idToFollow={user._id}
+                            type={'suggestion'}
+                          />
                         </div>
                       </li>
                     )
