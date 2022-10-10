@@ -37,6 +37,7 @@ const Card = ({ post }) => {
                   .map((user) => {
                     // Si on trouve l'ID de l'utilisateur qui a posté le post, on retourne le chemin vers sa photo de profil,
                     if (user._id === post.posterId) return user.picture
+                    else return null
                   })
                   // La méthode "join()" permet d'éviter que la méthode "map()" ne mette des virgules entre chaque élément dans l'attribut "src" de la balise "img", comme on peut le voir dans l'inspecteur. On met donc une string vide pour joindre chaque élément.
                   .join('')
@@ -54,6 +55,7 @@ const Card = ({ post }) => {
                     usersData.map((user) => {
                       // Si on trouve l'ID de l'utilisateur qui a posté le post, on retourne son pseudo,
                       if (user._id === post.posterId) return user.pseudo
+                      else return null
                     })}
                 </h3>
                 {/* On code une condition pour empêcher l'utilisateur actuel d'être ami avec lui-même */}

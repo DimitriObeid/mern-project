@@ -36,7 +36,7 @@ const App = () => {
     if (uid) {
       dispatch(getUser(uid))
     }
-  }, [uid])
+  }, [uid, dispatch])
 
   // On appelle notre component "Routes" dans une balise HTML.
   return (
