@@ -1,19 +1,40 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { dateParser, isEmpty } from '../Utils'
 import FollowHandler from '../Profil/FollowHandler'
 import LikeButton from './LikeButton'
+import { getPosts, updatePost } from '../../actions/post.actions'
+import DeleteCard from './DeleteCard'
+import CardComments from './CardComments'
 
 // Le "post" est le prop passé lors de l'appel du component "Card" dans le fichier "Thread.js".
 const Card = ({ post }) => {
   // Tant qu'on n'a pas les données complètes pour afficher le pont, on montre à l'utilisateur que le post charge.
   const [isLoading, setIsLoading] = useState(true)
 
+  // Mise à jour d'un post de par l'auteur du post lui-même.
+  const [isUpdated, setIsUpdated] = useState(false)
+  const [textUpdate, setTextUpdate] = useState(null)
+
+  // Affichage des commentaires (de base, on ne les montre pas).
+  const [showComments, setShowComments] = useState(false)
+
   // Il faut qu'on ait toute la BDD de nos utilisateurs pour savoir ce qu'ils ont aimés, quel est le nom de l'auteur du post, sa photo, car ce ne sont pas des choses qui sont stockées dans le store.
   const usersData = useSelector((state) => state.usersReducer)
 
   // On récupère les données de notre utilisateur.
   const userData = useSelector((state) => state.userReducer)
+
+  const dispatch = useDispatch()
+
+  const updateItem = () => {
+    // S'il y a quelque chose qui a changé dans le message à éditer (sinon ça ne sert à rien de faire un requête dans la BDD)
+    if (textUpdate) {
+      dispatch(updatePost(post._id, textUpdate))
+    }
+
+    setIsUpdated(false)
+  }
 
   useEffect(() => {
     // Si on a les données du post, on remet le modal "isLoading" sur "false".
@@ -67,13 +88,26 @@ const Card = ({ post }) => {
               {/* On affiche la date du post */}
               <span>{dateParser(post.createdAt)}</span>
             </div>
-            <p>{post.message}</p>
+            {isUpdated === false && <p>{post.message}</p>}
+            {isUpdated && (
+              <div className="update-post">
+                {/* Lorsqu'on clique sur le message à éditer, on souhaite conserver le message original pour que l'utilisateur puisse le modifier*/}
+                <textarea
+                  defaultValue={post.message}
+                  onChange={(e) => setTextUpdate(e.target.value)}
+                />
+                <div className="button-container">
+                  <button className="btn" onClick={updateItem}>
+                    Valider les modifications
+                  </button>
+                </div>
+              </div>
+            )}
             {/* Si une photo est attachée au post, alors on l'affiche (comme dit précédemment, si jamais on réclame une donnée qui n'a pas été cherchée ou trouvée dans la BDD, React n'attendra pas de données et renverra une erreur. Avant qu'il ne le fasse, il faut lui dire que l'on a les données) */}
             {/* Dans le "src", on passe le chemin de la photo attachée à ce post. */}
             {post.picture && (
               <img src={post.picture} alt="card-pic" className="card-pic" />
             )}
-
             {/* Même chose que précédemment, avec les vidéos postées */}
             {post.video && (
               <iframe
@@ -86,15 +120,31 @@ const Card = ({ post }) => {
                 allowFullScreen
               ></iframe>
             )}
+            {/* On propose à l'utilisateur la possibilité d'éditer ou de supprimer SON PROPRE message ici */}
+            {userData._id === post.posterId && (
+              <div className="button-container">
+                {/* Au lieu de mettre impérativement l'état du modal "isUpdated" sur "true", on met la valuer inverse pour activer ou désactiver le mode d'édition en y refaisant un clic dessus */}
+                <div onClick={() => setIsUpdated(!isUpdated)}>
+                  <img src="./img/icons/edit.svg" alt="edit" />
+                </div>
+                <DeleteCard id={post._id} />
+              </div>
+            )}
             <div className="card-footer">
               <div className="comment-icon">
-                <img src="./img/icons/message1.svg" alt="comment" />
+                <img
+                  onClick={() => setShowComments(!showComments)}
+                  src="./img/icons/message1.svg"
+                  alt="comment"
+                />
                 {/* Obtention du nombre de commentaires obtenus */}
                 <span>{post.comments.length}</span>
               </div>
               <LikeButton post={post} />
               <img src="./img/icons/share.svg" alt="share" />
             </div>
+            {/* Si l'utilisateur a décidé de voir les commentaires sous un post, alors on appelle le component CardComment, pour déclencher toute la logique derrière le component */}
+            {showComments && <CardComments post={post} />}
           </div>
         </>
       )}

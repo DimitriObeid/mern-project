@@ -7,7 +7,16 @@ export const LIKE_POST = 'LIKE_POST'
 
 export const UNLIKE_POST = 'UNLIKE_POST'
 
-// "num" : nombre de posts à charger (infinite scroll).
+export const UPDATE_POST = 'UPDATE_POST'
+
+export const DELETE_POST = 'DELETE_POST'
+
+// Commentaires
+export const ADD_COMMENT = 'ADD_COMMENT'
+
+// CRUD posts.
+
+// Param : num (nombre de posts à charger (infinite scroll)).
 export const getPosts = (num) => {
   return (dispatch) => {
     return axios
@@ -21,7 +30,7 @@ export const getPosts = (num) => {
   }
 }
 
-// Paramètres : l'ID du post, l'ID de la personne qui l'aime.
+// Params : ID du post, ID de la personne qui l'aime.
 export const likePost = (postId, userId) => {
   return (dispatch) => {
     return axios({
@@ -37,7 +46,7 @@ export const likePost = (postId, userId) => {
   }
 }
 
-// Paramètres : l'ID du post, l'ID de la personne qui ne l'aime plus.
+// Params : ID du post, l'ID de la personne qui ne l'aime plus.
 export const unlikePost = (postId, userId) => {
   return (dispatch) => {
     return axios({
@@ -53,4 +62,52 @@ export const unlikePost = (postId, userId) => {
   }
 }
 
-// Commentaires
+// Params : ID du post à éditer, message à mettre à jour.
+export const updatePost = (postId, message) => {
+  return (dispatch) => {
+    return axios({
+      method: 'put',
+      url: `${process.env.REACT_APP_API_URL}api/post/${postId}`,
+      data: { message },
+    })
+      .then((res) => {
+        dispatch({ type: UPDATE_POST, payload: { message, postId } })
+      })
+      .catch((err) => console.log(err))
+  }
+}
+
+// Param : ID du post à supprimer.
+export const deletePost = (postId) => {
+  return (dispatch) => {
+    return axios({
+      method: 'delete',
+      url: `${process.env.REACT_APP_API_URL}api/post/${postId}`,
+    })
+      .then((res) => {
+        dispatch({ type: DELETE_POST, payload: { postId } })
+      })
+      .catch((err) => console.log(err))
+  }
+}
+
+// CRUD commentaires
+
+// Params : ID du post cible, ID de son auteur, corps de texte, pseudo du commentateur.
+export const addComment = (postId, commenterId, text, commenterPseudo) => {
+  return (dispatch) => {
+    return axios({
+      method: 'patch',
+      url: `${process.env.REACT_APP_API_URL}api/post/comment-post/${postId}`,
+      // On ne passe pas le paramètre "postId" ici, car on le passe déjà précédemment (en faisant "req.params" en back).
+      data: { commenterId, text, commenterPseudo },
+    })
+      .then((res) => {
+        // On ne passe que le "postId" en payload, C-À-D dans le store, car on aura besoin d'infos que seule MongoDB a.
+        // MongoDB crée un ID unique pour le commentaire, et comme on a besoin de lui pour faire notre map, l'éditer, etc... On ne peut donc pas mettre à jour le store si on n'a pas cet ID.
+        // Notre action va se résumer à relancer la fonction "getPosts()", comme ça on aura l'ID du commentaire qui sera mis à jour. Pour cela, il faut refaire un appel au serveur, sinon on ne pourra pas travailler avec les ID.
+        dispatch({ type: ADD_COMMENT, payload: { postId } })
+      })
+      .catch((err) => console.log(err))
+  }
+}
