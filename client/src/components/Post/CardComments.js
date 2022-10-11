@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addComment, getPosts } from '../../actions/post.actions'
 import FollowHandler from '../Profil/FollowHandler'
 import { isEmpty, timestameParser } from '../Utils'
+import EditDeleteComment from './EditDeleteComment'
 
 const CardComments = ({ post }) => {
   const [text, setText] = useState('')
@@ -75,6 +76,8 @@ const CardComments = ({ post }) => {
               </div>
               {/* On affiche le texte du commentaire */}
               <p>{comment.text}</p>
+              {/* On propose à notre utilisateur d'éditer ou de supprimer son commentaire */}
+              <EditDeleteComment comment={comment} postId={post._id} />
             </div>
           </div>
         )

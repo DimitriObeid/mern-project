@@ -1,5 +1,7 @@
 import {
+  DELETE_COMMENT,
   DELETE_POST,
+  EDIT_COMMENT,
   GET_POSTS,
   LIKE_POST,
   UNLIKE_POST,
@@ -51,6 +53,50 @@ export default function postReducer(state = initialState, action) {
 
     case DELETE_POST:
       return state.filter((post) => post._id !== action.payload.postId)
+
+    case EDIT_COMMENT:
+      return state.map((post) => {
+        // On fait d'abord une recherche pour trouver le post où le commentaire a été écrit.
+        if (post._id === action.payload.postId) {
+          return {
+            // On évite d'écraser tous les autres posts.
+            ...post,
+            comments: post.comments.map((comment) => {
+              // On effectue une recherche supplémentaire pour trouver le commentaire à éditer.
+              if (comment._id === action.payload.commentId) {
+                return {
+                  // On évite d'écraser tous les autres commentaires.
+                  ...comment,
+                  text: action.payload.text,
+                }
+              }
+              // Sinon, si le commentaire ne correspond pas à celui que l'on souhaite éditer, on retourne tout de même le commentaire.
+              else {
+                return comment
+              }
+            }),
+          }
+        }
+        // Sinon, si le post ne correspond pas, on retourne tout de même le post.
+        else {
+          return post
+        }
+      })
+
+    case DELETE_COMMENT:
+      // On mappe le poste.
+      return state.map((post) => {
+        // On identifie le post dans lequel se situe le commentaire à supprimer.
+        if (post._id === action.payload.postId) {
+          return {
+            ...post,
+            // Dans le filtre, on garde tous les commentaires qui ne correspondent pas à l'ID du commentaire à supprimer.
+            comments: post.comments.filter(
+              (comment) => comment._id !== action.payload.commentId
+            ),
+          }
+        } else return post
+      })
 
     default:
       return state

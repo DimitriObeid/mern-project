@@ -14,6 +14,10 @@ export const DELETE_POST = 'DELETE_POST'
 // Commentaires
 export const ADD_COMMENT = 'ADD_COMMENT'
 
+export const EDIT_COMMENT = 'EDIT_COMMENT'
+
+export const DELETE_COMMENT = 'DELETE_COMMENT'
+
 // CRUD posts.
 
 // Param : num (nombre de posts à charger (infinite scroll)).
@@ -107,6 +111,45 @@ export const addComment = (postId, commenterId, text, commenterPseudo) => {
         // MongoDB crée un ID unique pour le commentaire, et comme on a besoin de lui pour faire notre map, l'éditer, etc... On ne peut donc pas mettre à jour le store si on n'a pas cet ID.
         // Notre action va se résumer à relancer la fonction "getPosts()", comme ça on aura l'ID du commentaire qui sera mis à jour. Pour cela, il faut refaire un appel au serveur, sinon on ne pourra pas travailler avec les ID.
         dispatch({ type: ADD_COMMENT, payload: { postId } })
+      })
+      .catch((err) => console.log(err))
+  }
+}
+
+// Params : ID du post cible, ID du commentaire, corps de texte.
+export const editComment = (postId, commentId, text) => {
+  return (dispatch) => {
+    return axios({
+      method: 'patch',
+      url: `${process.env.REACT_APP_API_URL}api/post/edit-comment-post/${postId}`,
+      // On ne passe pas le paramètre "postId" ici, car on le passe déjà précédemment (en faisant "req.params" en back).
+      data: { commentId, text },
+    })
+      .then((res) => {
+        // On ne passe que le "postId" en payload, C-À-D dans le store, car on aura besoin d'infos que seule MongoDB a.
+        // MongoDB crée un ID unique pour le commentaire, et comme on a besoin de lui pour faire notre map, l'éditer, etc... On ne peut donc pas mettre à jour le store si on n'a pas cet ID.
+        // Notre action va se résumer à relancer la fonction "getPosts()", comme ça on aura l'ID du commentaire qui sera mis à jour. Pour cela, il faut refaire un appel au serveur, sinon on ne pourra pas travailler avec les ID.
+        dispatch({ type: EDIT_COMMENT, payload: { postId, commentId, text } })
+      })
+      .catch((err) => console.log(err))
+  }
+}
+
+// Params : ID du post cible, ID du commentaire.
+export const deleteComment = (postId, commentId) => {
+  return (dispatch) => {
+    return axios({
+      // On n'effectue pas de requête DELETE à l'intérieur d'un tableau, mais bien une requête PATCH !
+      method: 'patch',
+      url: `${process.env.REACT_APP_API_URL}api/post/delete-comment-post/${postId}`,
+      // On ne passe pas le paramètre "postId" ici, car on le passe déjà précédemment (en faisant "req.params" en back).
+      data: { commentId },
+    })
+      .then((res) => {
+        // On ne passe que le "postId" en payload, C-À-D dans le store, car on aura besoin d'infos que seule MongoDB a.
+        // MongoDB crée un ID unique pour le commentaire, et comme on a besoin de lui pour faire notre map, l'éditer, etc... On ne peut donc pas mettre à jour le store si on n'a pas cet ID.
+        // Notre action va se résumer à relancer la fonction "getPosts()", comme ça on aura l'ID du commentaire qui sera mis à jour. Pour cela, il faut refaire un appel au serveur, sinon on ne pourra pas travailler avec les ID.
+        dispatch({ type: DELETE_COMMENT, payload: { postId, commentId } })
       })
       .catch((err) => console.log(err))
   }
