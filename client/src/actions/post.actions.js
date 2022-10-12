@@ -3,6 +3,9 @@ import axios from 'axios'
 // Posts
 export const GET_POSTS = 'GET_POSTS'
 
+// On met 'ADD_POST' le plus haut possible, car c'est une requête importante.
+export const ADD_POST = 'ADD_POST'
+
 export const LIKE_POST = 'LIKE_POST'
 
 export const UNLIKE_POST = 'UNLIKE_POST'
@@ -31,6 +34,14 @@ export const getPosts = (num) => {
         dispatch({ type: GET_POSTS, payload: array })
       })
       .catch((err) => console.log(err))
+  }
+}
+
+// On envoie nos données, puis on réinterroge notre BDD pour mettre à jour le store. Normalement, on ne fait pas ça dans Redux, mais vu qu'on ne connaît pas les ID spéciaux, c'est comme ça qu'il faut faire.
+// Params : DataForm.
+export const addPost = (data) => {
+  return (dispatch) => {
+    return axios.post(`${process.env.REACT_APP_API_URL}api/post/`, data)
   }
 }
 

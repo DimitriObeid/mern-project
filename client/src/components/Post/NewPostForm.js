@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { addPost, getPosts } from '../../actions/post.actions'
 import { isEmpty, timestameParser } from '../Utils'
 
 const NewPostForm = () => {
@@ -10,21 +11,57 @@ const NewPostForm = () => {
   // Le post peut contenir du texte ...
   const [message, setMessage] = useState('')
 
-  // ... un message...
+  // ... un message (la variable "postPicture" sert à visualiser l'image envoyée)...
   const [postPicture, setPostPicture] = useState(null)
 
   // ... ou une vidéo (ici, on l'enregistre sous forme d'une string, car on va traiter des liens YouTube).
   const [video, setVideo] = useState('')
 
-  // Fichier image.
+  // Fichier image (contrairement à la variable "postPicture", celle-ci contient le fichier de l'image, qui sera envoyé à la BDD).
   const [file, setFile] = useState()
 
   // On récupère les données de l'utilisateur enregistrées dans le store.
   const userData = useSelector((state) => state.userReducer)
 
-  const handlePicture = (e) => {}
+  const dispatch = useDispatch()
 
-  const handlePost = () => {}
+  // La fonction est asynchrone, car
+  const handlePost = async () => {
+    // Si le post contient au moins une des données, alors on l'envoie dans la BDD.
+    if (message || postPicture || video) {
+      // On va pouvoir envoyer au back-end / stocker une image ou du texte grâce à la classe "FormData".
+      const data = new FormData()
+
+      // Params de la méthode "append()" : le champ de "req.body" (posterId et message) ou de "req.file" (file), la donnée associée à traiter.
+      data.append('posterId', userData._id)
+      data.append('message', message)
+      if (file) data.append('file', file)
+
+      data.append('video', video)
+
+      await dispatch(addPost(data))
+
+      cancelPost()
+
+      // On appelle la fonction "getPosts()" pour avoir le nouveau post créé, avec son ID spécial.
+      dispatch(getPosts(data))
+    } else {
+      alert(
+        'Veuillez entrer un message, ou bien partager une image OU une vidéo'
+      )
+    }
+  }
+
+  const handlePicture = (e) => {
+    // On prévisualise l'image
+    setPostPicture(URL.createObjectURL(e.target.files[0]))
+
+    // On envoie l'image à la base de données.
+    setFile(e.target.files[0])
+
+    // On supprime la vidéo attachéee au post, si elle existe déjà (rappel, pour le moment, on ne peut pas mettre une image ET une vidéo simultanément).
+    setVideo('')
+  }
 
   const handleVideo = () => {
     // On prend le message de l'utilisater, on le sépare en plusieurs éléments délimités par une chaîne de caractères vide, puis via un boucle for, on charche l'élément contenat la chaîne de caractères du lien de la vidéo pour la récupérer et l'enregistrer dans la variable "video".
