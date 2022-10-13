@@ -13,6 +13,7 @@ const UpdateProfil = () => {
   const [updateForm, setupdateForm] = useState(false)
   const userData = useSelector((state) => state.userReducer)
   const usersData = useSelector((state) => state.usersReducer)
+  const error = useSelector((state) => state.errorReducer.userError)
 
   const dispatch = useDispatch()
 
@@ -38,6 +39,9 @@ const UpdateProfil = () => {
           <h3>Votre photo de profil</h3>
           <img src={userData.picture} alt="user-pic" />
           <UploadImg />
+          {/* Affichage des erreurs en cas d'envoi d'un format incompatible */}
+          <p>{error.maxSize}</p>
+          <p>{error.format}</p>
         </div>
         <div className="right-part">
           <div className="bio-update">

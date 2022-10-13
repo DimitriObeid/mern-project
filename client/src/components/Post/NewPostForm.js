@@ -20,8 +20,11 @@ const NewPostForm = () => {
   // Fichier image (contrairement à la variable "postPicture", celle-ci contient le fichier de l'image, qui sera envoyé à la BDD).
   const [file, setFile] = useState()
 
-  // On récupère les données de l'utilisateur enregistrées dans le store.
+  // On récupère les données de l'utilisateur enregistrées dans le store utilisateur.
   const userData = useSelector((state) => state.userReducer)
+
+  // On récupère les données de l'utilisateur enregistrées dans le store des erreurs.
+  const error = useSelector((state) => state.errorReducer.postError)
 
   const dispatch = useDispatch()
 
@@ -63,33 +66,6 @@ const NewPostForm = () => {
     setVideo('')
   }
 
-  const handleVideo = () => {
-    // On prend le message de l'utilisater, on le sépare en plusieurs éléments délimités par une chaîne de caractères vide, puis via un boucle for, on charche l'élément contenat la chaîne de caractères du lien de la vidéo pour la récupérer et l'enregistrer dans la variable "video".
-    let findLink = message.split(' ')
-
-    for (let i = 0; i < findLink.length; i++) {
-      if (
-        findLink[i].includes('https://www.yout') ||
-        findLink[i].includes('https://yout')
-      ) {
-        // En remplaçant cette partie du lien grâce à la méthode "replace()" (méthode native de JavaScript), la vidéo devient lisible via un lecteur en dehors du site YouTube.
-        let embed = findLink[i].replace('watch?v=', 'embed/')
-
-        // On retire également le paramètre de timestamp. Le tableau signifie que l'on souhaite garder la partie de gauche du lien, car lors du split, un tableau est créé et contient chaque élément splitté de son côté (la partie de gauche, que l'on souhaite garder, à l'indice 0, et la partie de droite, que l'on ne souhaite pas garder, à l'indice 1).
-        setVideo(embed.split('&')[0])
-
-        // On enlève le lien de la vidéo du texte du post.
-        findLink.splice(i, 1)
-
-        // On transforme de nouveau le tableau "findLink" en chaîne de caractères.
-        setMessage(findLink.join(' '))
-
-        // On enlève l'image attachée au post, si elle existe déjà (rappel, pour le moment, on ne peut pas mettre une image ET une vidéo simultanément).
-        setPostPicture('')
-      }
-    }
-  }
-
   const cancelPost = () => {
     setMessage('')
     setPostPicture('')
@@ -99,6 +75,34 @@ const NewPostForm = () => {
 
   useEffect(() => {
     if (!isEmpty(userData)) setIsLoading(false)
+
+    const handleVideo = () => {
+      // On prend le message de l'utilisater, on le sépare en plusieurs éléments délimités par une chaîne de caractères vide, puis via un boucle for, on charche l'élément contenat la chaîne de caractères du lien de la vidéo pour la récupérer et l'enregistrer dans la variable "video".
+      let findLink = message.split(' ')
+
+      for (let i = 0; i < findLink.length; i++) {
+        if (
+          findLink[i].includes('https://www.yout') ||
+          findLink[i].includes('https://yout')
+        ) {
+          // En remplaçant cette partie du lien grâce à la méthode "replace()" (méthode native de JavaScript), la vidéo devient lisible via un lecteur en dehors du site YouTube.
+          let embed = findLink[i].replace('watch?v=', 'embed/')
+
+          // On retire également le paramètre de timestamp. Le tableau signifie que l'on souhaite garder la partie de gauche du lien, car lors du split, un tableau est créé et contient chaque élément splitté de son côté (la partie de gauche, que l'on souhaite garder, à l'indice 0, et la partie de droite, que l'on ne souhaite pas garder, à l'indice 1).
+          setVideo(embed.split('&')[0])
+
+          // On enlève le lien de la vidéo du texte du post.
+          findLink.splice(i, 1)
+
+          // On transforme de nouveau le tableau "findLink" en chaîne de caractères.
+          setMessage(findLink.join(' '))
+
+          // On enlève l'image attachée au post, si elle existe déjà (rappel, pour le moment, on ne peut pas mettre une image ET une vidéo simultanément).
+          setPostPicture('')
+        }
+      }
+    }
+
     handleVideo()
   }, [userData, message, video])
 
@@ -208,6 +212,13 @@ const NewPostForm = () => {
                   </button>
                 )}
               </div>
+
+              {/* On gère l'affichage de messages d'erreurs pouvant survenir lors de la création et la soumission d'un post */}
+              {/* Gestion d'erreur de format de fichier */}
+              {!isEmpty(error.format) && <p>{error.format}</p>}
+
+              {/* Gestion d'erreur de taille de fichier */}
+              {!isEmpty(error.maxSize) && <p>{error.maxSize}</p>}
 
               {/* Bouton "envoyer" */}
               <div className="btn-send">

@@ -13,6 +13,8 @@ export const FOLLOW_USER = 'FOLLOW_USER'
 
 export const UNFOLLOW_USER = 'UNFOLLOW_USER'
 
+export const GET_USER_ERRORS = 'GET_USER_ERRORS'
+
 // Paramètre : l'user ID de notre utilisateur.
 export const getUser = (uid) => {
   // Le dispatch est la donnée qui sera envoyée au reducer pour qu'il la mette dans le store. Avant d'envoyer les choses au reducer, on envoie les données à la BDD.
@@ -40,17 +42,25 @@ export const uploadPicture = (data, id) => {
         // On envoie d'abord ces infos à la BDD (on crée un nom de fichier, on stocke l'image dans le dossier "public/uploads/profil")
         .post(`${process.env.REACT_APP_API_URL}api/user/upload`, data)
         .then((res) => {
-          // On effectue une requête GET pour chercher les informations de l'image, car on ne connaît ni le nom de la sauvegarde, ni le chemin. On demande à la BDD de nous fournir ce qu'elle a enregistré.
-          return (
-            axios
-              // Ici, après avoir envoyé les infos à la BDD, on passe le chemin de l'image...
-              .get(`${process.env.REACT_APP_API_URL}api/user/${id}`)
-              .then((res) => {
-                // Puis on récupère le chemin de cette image pour l'enregistrer dans le store, pour que l'utilisateur sache que son image de profil a été actualisée.
-                dispatch({ type: UPLOAD_PICTURE, payload: res.data.picture })
-              })
-              .catch((err) => console.log(err))
-          )
+          // On vérifie la compatibilité du fichier envoyé.
+          if (res.data.errors) {
+            dispatch({ type: GET_USER_ERRORS, payload: res.data.errors })
+          } else {
+            // Si une erreur a eu lieu précédemment, on supprime le message d'erreur précédemment affiché.
+            dispatch({ type: GET_USER_ERRORS, payload: '' })
+
+            // On effectue une requête GET pour chercher les informations de l'image, car on ne connaît ni le nom de la sauvegarde, ni le chemin. On demande à la BDD de nous fournir ce qu'elle a enregistré.
+            return (
+              axios
+                // Ici, après avoir envoyé les infos à la BDD, on passe le chemin de l'image...
+                .get(`${process.env.REACT_APP_API_URL}api/user/${id}`)
+                .then((res) => {
+                  // Puis on récupère le chemin de cette image pour l'enregistrer dans le store, pour que l'utilisateur sache que son image de profil a été actualisée.
+                  dispatch({ type: UPLOAD_PICTURE, payload: res.data.picture })
+                })
+                .catch((err) => console.log(err))
+            )
+          }
         })
         .catch((err) => console.log(err))
     )

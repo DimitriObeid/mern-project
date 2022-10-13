@@ -14,6 +14,9 @@ export const UPDATE_POST = 'UPDATE_POST'
 
 export const DELETE_POST = 'DELETE_POST'
 
+// Erreurs
+export const GET_POST_ERRORS = 'GET_POST_ERRORS'
+
 // Commentaires
 export const ADD_COMMENT = 'ADD_COMMENT'
 
@@ -41,7 +44,16 @@ export const getPosts = (num) => {
 // Params : DataForm.
 export const addPost = (data) => {
   return (dispatch) => {
-    return axios.post(`${process.env.REACT_APP_API_URL}api/post/`, data)
+    return axios
+      .post(`${process.env.REACT_APP_API_URL}api/post/`, data)
+      .then((res) => {
+        if (res.data.errors) {
+          dispatch({ type: GET_POST_ERRORS, payload: res.data.errors })
+        } else {
+          // On envoie un payload vide pour supprimer le message d'erreur.
+          dispatch({ type: GET_POST_ERRORS, payload: '' })
+        }
+      })
   }
 }
 
