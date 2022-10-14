@@ -3,6 +3,8 @@ import axios from 'axios'
 // Posts
 export const GET_POSTS = 'GET_POSTS'
 
+export const GET_ALL_POSTS = 'GET_ALL_POSTS'
+
 // On met 'ADD_POST' le plus haut possible, car c'est une requête importante.
 export const ADD_POST = 'ADD_POST'
 
@@ -14,15 +16,18 @@ export const UPDATE_POST = 'UPDATE_POST'
 
 export const DELETE_POST = 'DELETE_POST'
 
-// Erreurs
-export const GET_POST_ERRORS = 'GET_POST_ERRORS'
-
 // Commentaires
 export const ADD_COMMENT = 'ADD_COMMENT'
 
 export const EDIT_COMMENT = 'EDIT_COMMENT'
 
 export const DELETE_COMMENT = 'DELETE_COMMENT'
+
+// Tendances
+export const GET_TRENDS = 'GET_TRENDS'
+
+// Erreurs
+export const GET_POST_ERRORS = 'GET_POST_ERRORS'
 
 // CRUD posts.
 
@@ -35,6 +40,9 @@ export const getPosts = (num) => {
         // En passant '0' en premier argument de la méthode "slice()", cette dernière commence à lire le contenu du postReducer, et coupe le reste après l'index n°4 du tableau.
         const array = res.data.slice(0, num)
         dispatch({ type: GET_POSTS, payload: array })
+
+        // On récupère tous les posts pour la partie "trending".
+        dispatch({ type: GET_ALL_POSTS, payload: res.data })
       })
       .catch((err) => console.log(err))
   }
@@ -175,5 +183,12 @@ export const deleteComment = (postId, commentId) => {
         dispatch({ type: DELETE_COMMENT, payload: { postId, commentId } })
       })
       .catch((err) => console.log(err))
+  }
+}
+
+// Ici, on n'a rien à demander à la BDD, on trie les posts directement en front.
+export const getTrends = (sortedArray) => {
+  return (dispatch) => {
+    dispatch({ type: GET_TRENDS, payload: sortedArray })
   }
 }

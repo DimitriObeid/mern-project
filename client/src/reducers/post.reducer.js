@@ -43,7 +43,7 @@ export default function postReducer(state = initialState, action) {
 
     case UPDATE_POST:
       return state.map((post) => {
-        if ((post.id = action.payload.postId)) {
+        if ((post._id = action.payload.postId)) {
           return {
             ...post,
             message: action.payload.message,
