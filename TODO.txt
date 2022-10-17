@@ -1,0 +1,8 @@
+Fonctionnalités à implémenter :
+    - Créer une application
+    - Créer un lecteur vidéo (possibilité de partager des vidéos autrement que via YouTube)
+    - Vérifier l'existence de l'adresse e-mail entrée par l'utilisateur
+    - Possibilité de changer de pseudo (à la manière de Twitter)
+    - Thème sombre
+    - Changement de mot de passe
+    - Plus d'informations sur l'utilisateur, optionnelles (pays, numéro de téléphone (envoi de SMS))

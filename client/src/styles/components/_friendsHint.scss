@@ -57,5 +57,11 @@
         }
       }
     }
+    .no-user-hint {
+      display: grid;
+      grid-template-columns: 20% 50% 30%;
+      align-items: center;
+      margin: 8px 0;
+    }
   }
 }
