@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/user.routes')
 const postRoutes = require('./routes/post.routes')
+const http = require('http')
 require('dotenv').config({ path: './config/.env' })
 require('./config/db')
 const { checkUser, requireAuth } = require('./middleware/auth.middleware')
@@ -11,13 +12,27 @@ const cors = require('cors')
 const app = express()
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL,
+  origin: [process.env.CLIENT_URL, process.env.CLIENT_URL_LOCAL, '*'],
   credentials: true,
-  allowedHeaders: ['sessionId', 'Content-Type'],
-  exposedHeaders: ['sessionId'],
+  allowedHeaders: [
+    'sessionId',
+    'Content-Type',
+    'Origin',
+    'X-Requested-With',
+    'Accept',
+  ],
+  exposedHeaders: [
+    'sessionId',
+    'Content-Type',
+    'Origin',
+    'X-Requested-With',
+    'Accept',
+  ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
 }
+
+app.options('*', cors())
 app.use(cors(corsOptions))
 
 app.use(bodyParser.json())
@@ -35,6 +50,11 @@ app.get('/jwtid', requireAuth, (req, res) => {
 // routes
 app.use('/api/user', userRoutes)
 app.use('/api/post', postRoutes)
+
+const server = http.createServer(function (req, res) {
+  console.log(req) //code to handle requests to newPort
+  res.end('Hello World')
+})
 
 // server
 app.listen(process.env.PORT, () => {

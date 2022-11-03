@@ -8,7 +8,7 @@ const Logout = () => {
   // La clé à passer en paramètre est la clé du cookie à retirer.
   // Cette fonction est exécutée en front.
   const removeCookie = (key) => {
-    // S'il se passe quulque chose sur la fenêtre.
+    // S'il se passe quelque chose sur la fenêtre.
     if (window !== 'undefined') {
       // Arguments : clé du cookie, expiration.
       cookie.remove(key, { expires: 1 })

@@ -1,6 +1,7 @@
 Fonctionnalités à implémenter :
     - Créer une application
     - Créer un lecteur vidéo (possibilité de partager des vidéos autrement que via YouTube)
+    - Partage d'autres formats de fichiers.
     - Vérifier l'existence de l'adresse e-mail entrée par l'utilisateur
     - Possibilité de changer de pseudo (à la manière de Twitter)
     - Thème sombre
