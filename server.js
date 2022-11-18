@@ -32,7 +32,11 @@ const corsOptions = {
   preflightContinue: false,
 }
 
+<<<<<<< HEAD
 // app.options('*', cors())
+=======
+app.options('*', cors())
+>>>>>>> 069f366a0cc1a6bd8dda344eb006077b78c34910
 app.use(cors(corsOptions))
 
 app.use(bodyParser.json())
@@ -51,12 +55,18 @@ app.get('/jwtid', requireAuth, (req, res) => {
 app.use('/api/user', userRoutes)
 app.use('/api/post', postRoutes)
 
+<<<<<<< HEAD
 /*
+=======
+>>>>>>> 069f366a0cc1a6bd8dda344eb006077b78c34910
 const server = http.createServer(function (req, res) {
   console.log(req) //code to handle requests to newPort
   res.end('Hello World')
 })
+<<<<<<< HEAD
 */
+=======
+>>>>>>> 069f366a0cc1a6bd8dda344eb006077b78c34910
 
 // server
 app.listen(process.env.PORT, () => {
