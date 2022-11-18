@@ -6,19 +6,28 @@ import Thread from '../components/Thread'
 import Log from '../components/Log'
 import Trends from '../components/Trends'
 import FriendsHint from '../components/Profil/FriendsHint'
+import { ThemeContext } from '../Contexts/DarkModeContext'
 
 const Home = () => {
   const uid = useContext(UidContext)
 
+  const theme = useContext(ThemeContext)
+
+  const darkMode = theme.state.darkMode
+
   return (
-    <div className="home">
+    <div className={`home ${darkMode ? 'home-dark' : 'home-light'}`}>
       {/* Section de gauche */}
       <LeftNav />
 
       {/* Section centrale */}
-      <div className="main">
+      <div className={`main ${darkMode ? 'main-dark' : 'main-light'}`}>
         {/* Formulaire de création de post */}
-        <div className="home-header">
+        <div
+          className={`home-header ${
+            darkMode ? 'home-header-dark' : 'home-header-light'
+          }`}
+        >
           {uid ? <NewPostForm /> : <Log signin={true} signup={false} />}
         </div>
         <Thread />

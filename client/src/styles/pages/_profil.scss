@@ -18,7 +18,7 @@
 
   .connection-form {
     border: none;
-    background: $color-4;
+    background: $light-pink;
     min-width: 490px;
     width: 90%;
     text-align: center;
@@ -51,10 +51,10 @@
           }
         }
         .active-btn {
-          background: $color-1;
+          background: $red;
 
           &:hover {
-            background: $color-2;
+            background: $salmon;
           }
         }
         li:not(.active-btn) {
@@ -68,14 +68,14 @@
             margin-bottom: 30px;
 
             &:after {
-              content: "";
+              content: '';
               position: absolute;
               bottom: -10px;
               left: 50%;
               transform: translateX(-50%);
               width: 80%;
               height: 1px;
-              background: $color-2;
+              background: $salmon;
             }
           }
         }
@@ -130,7 +130,7 @@
     }
 
     > div {
-      background: $color-4;
+      background: $light-pink;
       border-radius: 20px;
       padding: 25px;
       margin: 20px 10px;
@@ -161,8 +161,8 @@
           position: absolute;
           transform: translate(-50%, -50%);
           width: 270px;
-          background: $color-3;
-          color: $color-2;
+          background: $deep-blue;
+          color: $salmon;
           border-radius: 20px;
           display: inline-block;
           padding: 9px 0;
@@ -170,7 +170,7 @@
           z-index: 10;
           cursor: pointer;
         }
-        input[type="file"] {
+        input[type='file'] {
           position: absolute;
           opacity: 1;
           transform: translate(-3px, -50%);
@@ -181,7 +181,7 @@
             opacity: 0;
           }
         }
-        input[type="submit"] {
+        input[type='submit'] {
           margin-top: 10px;
           border-radius: 20px;
 
@@ -205,7 +205,7 @@
       p,
       textarea {
         min-height: 80px;
-        border: 1px solid $color-1;
+        border: 1px solid $red;
         border-radius: 20px 20px 6px 20px;
         padding: 10px 20px;
         font-size: 1.1rem;
@@ -223,8 +223,8 @@
         margin: 60px 0 10px;
       }
       h5 {
-        background: $color-1;
-        color: $color-4;
+        background: $red;
+        color: $light-pink;
         font-family: $font-1;
         margin: 20px 0;
         padding: 12px;
@@ -260,14 +260,14 @@
       top: 10%;
       left: 50%;
       transform: translate(-100%);
-      background: $color-2;
+      background: $salmon;
       padding: 25px;
       border-radius: 20px;
       box-shadow: 0 0 2px rgba(131, 130, 130, 0.356);
       overflow: auto;
       transform: scaleY(0);
       transform-origin: center;
-      animation: modal .5s forwards;
+      animation: modal 0.5s forwards;
 
       h3 {
         min-width: 200px;
@@ -301,10 +301,10 @@
           width: 2px;
         }
         &::-webkit-scrollbar-track {
-          background: $color-4;
+          background: $light-pink;
         }
         &::-webkit-scrollbar-thumb {
-          background: $color-1;
+          background: $red;
         }
         &::-webkit-scrollbar-thumb:hover {
           background: #555;
@@ -331,12 +331,12 @@
             text-align: left;
 
             button {
-              background: $color-4;
+              background: $light-pink;
               border-radius: 20px;
               margin-right: 6px;
 
               &:hover {
-                color: $color-3;
+                color: $deep-blue;
                 transform: translateX(2px);
               }
             }
@@ -344,5 +344,75 @@
         }
       }
     }
+  }
+}
+
+.profil-page-dark {
+  background-color: $deep-blue;
+
+  .connection-form-dark {
+    background-color: $gray;
+    color: $white;
+
+    .form-container-dark {
+      ul {
+        .active-btn-dark {
+          background: $red;
+
+          &:hover {
+            background: $gray;
+          }
+        }
+        #login {
+          position: relative;
+          @media screen and(max-width: 550px) {
+            margin-bottom: 30px;
+
+            &:after {
+              background: $salmon;
+            }
+          }
+        }
+      }
+      form-dark {
+        a {
+          color: rgb(76, 76, 179);
+        }
+      }
+    }
+  }
+  .update-container-dark {
+  }
+}
+
+.profile-page-light {
+  .connection-form-light {
+    background-color: $light-pink;
+
+    .form-container-light {
+      ul {
+        .active-btn-light {
+          background: $red;
+
+          &:hover {
+            background: $salmon;
+          }
+        }
+        #login {
+          @media screen and(max-width: 550px) {
+            &:after {
+              background: $salmon;
+            }
+          }
+        }
+      }
+      form {
+        a {
+          color: rgb(62, 62, 214);
+        }
+      }
+    }
+  }
+  .update-container-light {
   }
 }

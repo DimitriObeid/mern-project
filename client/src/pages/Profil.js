@@ -2,13 +2,22 @@ import React, { useContext } from 'react'
 import Log from '../components/Log'
 import { UidContext } from '../components/AppContext'
 import UpdateProfil from '../components/Profil/UpdateProfil'
+import { ThemeContext } from '../Contexts/DarkModeContext'
 
 const Profil = () => {
   // En faisant comme ça, notre variable "uid" aura l'ID de l'utilisateur s'il est connecté.
   const uid = useContext(UidContext)
 
+  const theme = useContext(ThemeContext)
+
+  const darkMode = theme.state.darkMode
+
   return (
-    <div className="profil-page">
+    <div
+      className={`profil-page ${
+        darkMode ? 'profil-page-dark' : 'profile-page-light'
+      } `}
+    >
       {/* On vérifie si l'utilisateur est connecté, pour pouvoir lui afficher le formulaire de connexion s'il ne l'est pas. S'il l'est, on lui envoie la page de mise à jour du profil via le component "UpdateProfil" */}
       {uid ? (
         <UpdateProfil />

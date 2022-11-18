@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
 import { getUsers } from './actions/users.actions'
 import { getPosts } from './actions/post.actions'
+import { ThemeProvider } from './Contexts/DarkModeContext'
 
 // "Thunk" est un middleware nous permettant de faire des requêtes asynchrones avec Redux.
 import thunk from 'redux-thunk'
@@ -37,16 +38,14 @@ store.dispatch(getPosts())
 /** la variable "store" appelée dans l'attribut "store" est la constante définie ci-dessus */
 ReactDOM.render(
   <Provider store={store}>
-    {/* On englobe toute notre application dans le component provider */}
-    <App />
+    <ThemeProvider>
+      {/* On englobe toute notre application dans le component provider */}
+      <App />
+    </ThemeProvider>
   </Provider>,
   document.getElementById('root')
 )
 
-//
-//
-//
-//
 //
 //
 /*

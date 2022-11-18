@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { UidContext } from './components/AppContext'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { getUser } from './actions/user.actions'
+import { ThemeContext } from './Contexts/DarkModeContext'
 
 // On appelle notre navigation (elle passera automatiquement par le fichier "index.js")
 import Routes from './components/Routes'
 
 const App = () => {
   const [uid, setUid] = useState(null)
+
+  const theme = useContext(ThemeContext)
+
+  const darkMode = theme.state.darkMode
 
   // On enregistre le hook "useDispatch" dans notre constante "dispatch"
   const dispatch = useDispatch()

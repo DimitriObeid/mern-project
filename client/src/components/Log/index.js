@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { ThemeContext } from '../../Contexts/DarkModeContext'
+
 import SignUpForm from './SignUpForm'
 import SignInForm from './SingInForm'
 
@@ -21,6 +23,10 @@ const Log = (props) => {
   // Modal de connexion
   const [signInModal, setSignInModal] = useState(props.signin)
 
+  const theme = useContext(ThemeContext)
+
+  const darkMode = theme.state.darkMode
+
   // e = événement / event.
   const handleModals = (e) => {
     // Si l'utilisateur clique sur le bouton d'inscription.
@@ -38,7 +44,11 @@ const Log = (props) => {
 
   // Rendu visuel
   return (
-    <div className="connection-form">
+    <div
+      className={`connection-form ${
+        darkMode ? 'connection-form-dark' : 'connection-form-light'
+      }`}
+    >
       <div className="form-container">
         <ul>
           {/* Dans la balise "li", on appelle notre fonction "handleModals" via l'attribut "onClick" */}

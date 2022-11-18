@@ -1,5 +1,5 @@
 .connection-from {
-  border: 2px solid $color-1;
+  border: 2px solid $red;
   width: 400px;
   margin: 35px auto 0;
   padding: 20px 0;
@@ -16,7 +16,7 @@
     justify-content: space-around;
 
     li {
-      background: $color-2;
+      background: $salmon;
       color: $white;
       width: 130px;
       padding: 10px 0;
@@ -26,18 +26,16 @@
       box-shadow: 3px 3px 1px rgba(51, 51, 51, 0.418);
 
       &:hover {
-        background: $color-1;
+        background: $red;
       }
     }
   }
   .active-btn {
-    background: $color-1;
+    background: $red;
   }
   form {
     width: 400px;
     margin: 10px auto 0;
     padding: 20px;
-
   }
 }
-

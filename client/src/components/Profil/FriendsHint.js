@@ -66,7 +66,7 @@ const FriendsHint = () => {
       ) : (
         <ul>
           {/* Si notre tableau "friendsHint" contient une valeur (une personne à ajouter) */}
-          {friendsHint && friendsHint.length > 1 ? (
+          {friendsHint &&
             friendsHint.map((user) => {
               for (let i = 0; i < usersData.length; i++) {
                 // On "transforme" les ID avec une photo de profil et un nom d'utilisateur.
@@ -84,12 +84,7 @@ const FriendsHint = () => {
                   )
                 }
               }
-            })
-          ) : (
-            <div className="no-user-hint">
-              <p>Pas de nouvel ami à ajouter</p>
-            </div>
-          )}
+            })}
         </ul>
       )}
     </div>
