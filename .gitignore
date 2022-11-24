@@ -27,6 +27,8 @@ client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
 
+MongoDB.txt
+
 # Fichiers temporaires créés par LibreOffice
 **/*.~lock*
 
